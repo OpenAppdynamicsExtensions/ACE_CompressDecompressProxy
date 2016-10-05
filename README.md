@@ -103,8 +103,7 @@ sure there is no gzip compressed content between the proxy chain.
 
 #### Examples
 
-
-```
+```bash
  proxy expandAndForward  -port 9099 -target http://localhost:9097/
  proxy compressAndForward -port 9097 -target https://mobile.eum-appdynamics.com/
 ```
