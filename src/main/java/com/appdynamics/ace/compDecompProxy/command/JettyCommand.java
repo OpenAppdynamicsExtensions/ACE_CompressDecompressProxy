@@ -9,6 +9,7 @@ import org.apache.log4j.spi.RootLogger;
 import org.eclipse.jetty.io.EndPoint;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public abstract class JettyCommand extends AbstractCommand {
         Server http = new Server(Integer.parseInt(options.getOptionValue(PORT)));
 
         addHandler(http);
+
         addConfig(http);
 
         try {
