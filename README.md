@@ -30,7 +30,9 @@ proxy startDebugEndpoint -port 9098 -verbose -dir /tmp/data
 ```
 
 **Output**
-```POST /eumcollector/mobileMetrics?version=2 HTTP/1.0
+
+```bash
+POST /eumcollector/mobileMetrics?version=2 HTTP/1.0
    X-Real-IP: 93.216.45.249
    Host: smarxdocker2.ddns.net:9990
    Connection: close
@@ -73,7 +75,8 @@ sure there is no gzip compressed content between the proxy chain.
 
 #### Usage
 
-``` ==  Command
+``` 
+==  Command
 
     expandAndForward
 
