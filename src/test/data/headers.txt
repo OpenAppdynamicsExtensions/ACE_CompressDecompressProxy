@@ -1,0 +1,12 @@
+mat: 1472756400000
+di: cb519cff-79e2-4c4d-bd42-1732c8cba736
+User-Agent: Dalvik/2.1.0 (Linux; U; Android 6.0; Android SDK built for x86_64 Build/MASTER)
+Connection: keep-alive
+gzip: true
+Host: 172.17.0.10:9099
+osn: Android
+Accept-Encoding: gzip
+an: org.codingfragments.eumtest2
+ky: AD-AAB-AAC-PWJ
+cap: s:1
+bid: 9f0da9838ce1f97f699f4c20924a49de
