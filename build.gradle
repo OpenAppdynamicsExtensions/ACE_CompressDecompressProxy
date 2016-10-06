@@ -15,6 +15,8 @@ apply plugin: 'application'
 applicationName = 'proxy'
 mainClassName = 'com.appdynamics.ace.compDecompProxy.Main'
 
+
+applicationDefaultJvmArgs = ["-Xmx512m","-Xms512m"]
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use 'jcenter' for resolving your dependencies.

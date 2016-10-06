@@ -1,4 +1,4 @@
-package com.appdynamics.ace.compDecompProxy;
+package com.appdynamics.ace.compDecompProxy.command;
 
 import com.appdynamics.ace.compDecompProxy.command.JettyCommand;
 import com.appdynamics.ace.compDecompProxy.handler.CompressProxyServlet;

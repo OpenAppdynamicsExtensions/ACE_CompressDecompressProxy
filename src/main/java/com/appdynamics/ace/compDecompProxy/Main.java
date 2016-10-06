@@ -1,11 +1,12 @@
 package com.appdynamics.ace.compDecompProxy;
 
+import com.appdynamics.ace.compDecompProxy.command.CompressingProxyCommand;
 import com.appdynamics.ace.compDecompProxy.command.DebugFileCommand;
+import com.appdynamics.ace.compDecompProxy.command.ExpandingProxyCommand;
 import com.appdynamics.ace.util.cli.api.api.CommandlineExecution;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.varia.NullAppender;
 
 /**
  * Created by stefan.marx on 28.09.16.

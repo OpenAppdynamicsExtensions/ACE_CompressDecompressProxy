@@ -23,9 +23,11 @@ public abstract class JettyCommand extends AbstractCommand {
 
     public static final String VERBOSE = "verbose";
     public static final String PORT = "port";
+    public static final String DEBUG = "debug";
     private boolean _verbose;
 
     protected static Logger _log = Logger.getLogger("Jetty");
+    private boolean _debug;
 
     @Override
     protected List<Option> getCLIOptionsImpl() {
@@ -41,6 +43,9 @@ public abstract class JettyCommand extends AbstractCommand {
         options.add(o = new Option(VERBOSE,false,"verbose output"));
         o.setRequired(false);
 
+        options.add(o = new Option(DEBUG,false,"debug output"));
+        o.setRequired(false);
+
         return options;
     }
 
@@ -51,8 +56,9 @@ public abstract class JettyCommand extends AbstractCommand {
     @Override
     protected int executeImpl(OptionWrapper options) throws CommandException {
         _verbose = options.hasOption(VERBOSE) ;
-
+         _debug =  options.hasOption(DEBUG) ;
         if (_verbose) RootLogger.getRootLogger().setLevel(org.apache.log4j.Level.INFO);
+        if (_debug) RootLogger.getRootLogger().setLevel(org.apache.log4j.Level.DEBUG);
 
 
         Server http = new Server(Integer.parseInt(options.getOptionValue(PORT)));

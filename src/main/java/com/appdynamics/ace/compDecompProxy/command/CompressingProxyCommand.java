@@ -1,4 +1,4 @@
-package com.appdynamics.ace.compDecompProxy;
+package com.appdynamics.ace.compDecompProxy.command;
 
 import com.appdynamics.ace.compDecompProxy.command.DebugFileCommand;
 import com.appdynamics.ace.compDecompProxy.command.JettyCommand;
@@ -58,7 +58,7 @@ public class CompressingProxyCommand extends JettyCommand{
         ServletHolder holder = new ServletHolder(new CompressProxyServlet(_targetUrl, _compressHeader));
 
 
-        holder.setAsyncSupported(true);
+       // holder.setAsyncSupported(true);
         holder.setInitParameter("maxThreads", "20");
 
         servletHandler.addServletWithMapping(holder,"/");
