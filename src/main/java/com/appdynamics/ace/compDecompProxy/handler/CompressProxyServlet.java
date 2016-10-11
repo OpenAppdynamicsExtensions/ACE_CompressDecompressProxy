@@ -3,7 +3,9 @@ package com.appdynamics.ace.compDecompProxy.handler;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentProvider;
 import org.eclipse.jetty.client.api.Request;
+import org.eclipse.jetty.client.util.ByteBufferContentProvider;
 import org.eclipse.jetty.client.util.BytesContentProvider;
+import org.eclipse.jetty.client.util.MultiPartContentProvider;
 import org.eclipse.jetty.proxy.ProxyServlet;
 import org.eclipse.jetty.servlet.Source;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
@@ -17,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Deflater;
@@ -79,7 +82,9 @@ public class CompressProxyServlet extends ProxyServlet {
             proxyRequest.getHeaders().add("gzip","true");
             proxyRequest.getHeaders().remove(_compressHeader);
 
-            return new BytesContentProvider(request.getContentType(),dataBuffer);
+
+            return new ByteBufferContentProvider(request.getContentType(),ByteBuffer.wrap(dataBuffer));
+
 
         }  else return super.proxyRequestContent(request,response,proxyRequest);
     }
@@ -131,7 +136,6 @@ public class CompressProxyServlet extends ProxyServlet {
 
         return rewrittenURI.toString();
     }
-
 
 
 }

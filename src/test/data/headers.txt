@@ -4,6 +4,7 @@ User-Agent: Dalvik/2.1.0 (Linux; U; Android 6.0; Android SDK built for x86_64 Bu
 Connection: keep-alive
 gzip: true
 Host: 172.17.0.10:9099
+should-compress: gzip
 osn: Android
 Accept-Encoding: gzip
 an: org.codingfragments.eumtest2

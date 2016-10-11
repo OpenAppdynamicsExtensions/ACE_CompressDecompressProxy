@@ -15,6 +15,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.util.Date;
 import java.util.Enumeration;
@@ -75,6 +76,7 @@ public class DebugFileCommand extends JettyCommand {
         protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             Date time = new Date();
 
+
             System.out.println("\n-----------------\nDebug : "+req.getMethod().toUpperCase()+"  "+req.getRequestURI());
 
 
@@ -115,21 +117,26 @@ public class DebugFileCommand extends JettyCommand {
                                         new File(dir,System.currentTimeMillis()+"_data.dat"));
 
 
-
-
                 }
 
-                while ( (rlen = r.read(buffer)) != -1) {
-                    String s = new String(buffer,0,rlen);
-                    System.out.print(s);
+                int charsRead = 0;
+                System.out.println("Available chars: "+r.available() );
 
-                    if (output != null) {
+                while ( (rlen = r.read(buffer)) != -1) {
+
+                    charsRead += rlen;
+                    String s = new String(buffer,0,rlen);
+                    String printS  = s.replaceAll("[^\\p{Graph}]",".");
+                    System.out.println(printS);
+
+                     if (output != null) {
                         output.write(buffer,0,rlen);
                     }
 
                 }
                 System.out.println("\n----");
 
+                System.out.println("Char readed: "+charsRead);
                 if (output != null) {
                     output.flush();
                     output.close();
