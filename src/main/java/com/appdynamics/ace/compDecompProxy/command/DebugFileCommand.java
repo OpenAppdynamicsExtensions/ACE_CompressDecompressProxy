@@ -7,7 +7,6 @@ import org.apache.commons.cli.Option;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.servlet.Source;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -27,6 +26,7 @@ import java.util.List;
 public class DebugFileCommand extends JettyCommand {
     private boolean _save = false;
     private String _dir = null;
+    private String _filter = null;
 
     @Override
     public String getName() {
@@ -38,6 +38,9 @@ public class DebugFileCommand extends JettyCommand {
         List<Option> options = super.getCLIOptionsImpl();
         Option o = null;
         options.add(o = new Option("dir",true,"Directory to save content payload !"));
+        o.setRequired(false);
+
+        options.add(o = new Option("filter",true,"Filter to apply !"));
         o.setRequired(false);
 
         return options;
@@ -52,6 +55,8 @@ public class DebugFileCommand extends JettyCommand {
     protected int executeImpl(OptionWrapper options) throws CommandException {
         _dir = options.getOptionValue("dir",null) ;
         _save = options.hasOption("dir");
+        _filter = options.getOptionValue("filter","") ;
+
 
         return super.executeImpl(options);
     }
@@ -79,6 +84,9 @@ public class DebugFileCommand extends JettyCommand {
 
             System.out.println("\n-----------------\nDebug : "+req.getMethod().toUpperCase()+"  "+req.getRequestURI());
 
+            if (!_filter.equals("") && !req.getRequestURI().contains(_filter)){
+                return;
+            }
 
             // Header
             Enumeration<String> names = req.getHeaderNames();

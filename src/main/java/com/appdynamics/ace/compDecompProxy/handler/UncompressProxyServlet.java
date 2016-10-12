@@ -57,9 +57,9 @@ public class UncompressProxyServlet extends ProxyServlet {
     }
 
 
+    @Override
+    protected ContentProvider proxyRequestContent(Request proxyRequest, HttpServletRequest request) throws IOException {
 
-    protected ContentProvider proxyRequestContent(HttpServletRequest request, HttpServletResponse response, Request proxyRequest) throws IOException
-    {
         if ("true".equals(request.getHeader("gzip"))) {
 
 
@@ -89,7 +89,7 @@ public class UncompressProxyServlet extends ProxyServlet {
 
             return new BytesContentProvider(request.getContentType(),os.toByteArray());
 
-        }  else return super.proxyRequestContent(request,response,proxyRequest);
+        }  else  return super.proxyRequestContent(proxyRequest, request);
     }
 
     protected String rewriteTarget(HttpServletRequest request) {

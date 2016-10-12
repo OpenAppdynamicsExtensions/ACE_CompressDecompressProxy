@@ -5,9 +5,7 @@ import org.eclipse.jetty.client.api.ContentProvider;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.util.ByteBufferContentProvider;
 import org.eclipse.jetty.client.util.BytesContentProvider;
-import org.eclipse.jetty.client.util.MultiPartContentProvider;
 import org.eclipse.jetty.proxy.ProxyServlet;
-import org.eclipse.jetty.servlet.Source;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import javax.servlet.Servlet;
@@ -43,8 +41,9 @@ public class CompressProxyServlet extends ProxyServlet {
     }
 
 
-    protected ContentProvider proxyRequestContent(HttpServletRequest request, HttpServletResponse response, Request proxyRequest) throws IOException
-    {
+    @Override
+    protected ContentProvider proxyRequestContent(Request proxyRequest, HttpServletRequest request) throws IOException {
+
 
         _log.log(Level.INFO,"Processing Content: Length="+ request.getContentLength());
 
@@ -86,7 +85,8 @@ public class CompressProxyServlet extends ProxyServlet {
             return new ByteBufferContentProvider(request.getContentType(),ByteBuffer.wrap(dataBuffer));
 
 
-        }  else return super.proxyRequestContent(request,response,proxyRequest);
+        }  else   return super.proxyRequestContent(proxyRequest, request);
+
     }
 
     public void init() throws ServletException {
@@ -96,8 +96,13 @@ public class CompressProxyServlet extends ProxyServlet {
     }
 
     protected HttpClient newHttpClient() {
+
+
         SslContextFactory sslContextFactory = new SslContextFactory();
         HttpClient httpClient = new HttpClient(sslContextFactory);
+
+
+
         return httpClient;
     }
 
