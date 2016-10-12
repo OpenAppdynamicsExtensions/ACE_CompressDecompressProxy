@@ -11,6 +11,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,6 +85,8 @@ public class DebugFileCommand extends JettyCommand {
 
             System.out.println("\n-----------------\nDebug : "+req.getMethod().toUpperCase()+"  "+req.getRequestURI());
 
+            System.out.println(new Date());
+
             if (!_filter.equals("") && !req.getRequestURI().contains(_filter)){
                 return;
             }
@@ -151,6 +154,17 @@ public class DebugFileCommand extends JettyCommand {
 
                 }
             }
+
+
+            resp.setStatus(200);
+            ServletOutputStream sos = resp.getOutputStream();
+
+            PrintWriter pw = new PrintWriter(sos);
+
+
+            pw.close();
+            sos.close();
+
 
 
 

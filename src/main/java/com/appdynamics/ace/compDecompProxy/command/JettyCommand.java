@@ -11,6 +11,10 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -61,7 +65,20 @@ public abstract class JettyCommand extends AbstractCommand {
         if (_debug) RootLogger.getRootLogger().setLevel(org.apache.log4j.Level.DEBUG);
 
 
-        Server http = new Server(Integer.parseInt(options.getOptionValue(PORT)));
+        int port = Integer.parseInt(options.getOptionValue(PORT));
+
+        InetAddress bindAddress;
+
+        try {
+            bindAddress = InetAddress.getByName("0.0.0.0");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return -1;
+        }
+
+        InetSocketAddress bind= new InetSocketAddress(bindAddress,port);
+
+        Server http = new Server(port);
 
         addHandler(http);
 

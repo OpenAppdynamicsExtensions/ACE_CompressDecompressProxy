@@ -33,6 +33,8 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-servlet:9.2.15.v20160210'
     compile 'org.eclipse.jetty:jetty-proxy:9.2.15.v20160210'
     compile 'com.appdynamics.ace.cli:CommandFramework:1.5'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+
 
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
