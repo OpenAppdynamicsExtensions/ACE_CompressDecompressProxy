@@ -20,7 +20,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import java.util.zip.GZIPInputStream;
 
 
@@ -33,7 +33,7 @@ public class UncompressProxyServlet extends ProxyServlet {
 
     private static boolean _verbose;
 
-    protected static Logger _log = Logger.getLogger("UncompressServlet");
+    protected static Logger _log = Logger.getLogger(UncompressProxyServlet.class.getName());
 
     public UncompressProxyServlet(String targetUrl, String compressHeader) {
         super();
@@ -63,7 +63,7 @@ public class UncompressProxyServlet extends ProxyServlet {
         if ("true".equals(request.getHeader("gzip"))) {
 
 
-         _log.log(Level.INFO,"Decompressing Request ("+request.getContentLength()+")");
+            _log.info("Decompressing Request ("+request.getContentLength()+")");
 
 
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -81,7 +81,7 @@ public class UncompressProxyServlet extends ProxyServlet {
             is.close();
             os.close();
 
-             _log.log(Level.INFO,"new Size : "+size);
+            _log.info("new Size : "+size);
 
 
             proxyRequest.getHeaders().remove("gzip");

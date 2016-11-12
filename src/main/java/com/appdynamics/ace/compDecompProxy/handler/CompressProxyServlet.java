@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import java.util.zip.Deflater;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -32,7 +32,7 @@ public class CompressProxyServlet extends ProxyServlet {
     private String _compressHeader;
 
 
-    protected static Logger _log = Logger.getLogger("UncompressServlet");
+    protected static Logger _log = Logger.getLogger(CompressProxyServlet.class.getName());
 
     public CompressProxyServlet(String targetUrl, String compressHeader) {
         super();
@@ -45,12 +45,12 @@ public class CompressProxyServlet extends ProxyServlet {
     protected ContentProvider proxyRequestContent(Request proxyRequest, HttpServletRequest request) throws IOException {
 
 
-        _log.log(Level.INFO,"Processing Content: Length="+ request.getContentLength());
+        _log.info("Processing Content: Length="+ request.getContentLength());
 
         if ("gzip".equals(request.getHeader(_compressHeader))) {
 
 
-            _log.log(Level.INFO,"Compressing Request ("+request.getContentLength()+")");
+            _log.info("Compressing Request ("+request.getContentLength()+")");
 
 
 
@@ -75,7 +75,7 @@ public class CompressProxyServlet extends ProxyServlet {
 
             byte[] dataBuffer = os.toByteArray();
 
-            _log.log(Level.INFO,"new Size : "+dataBuffer.length);
+            _log.info("new Size : "+dataBuffer.length);
 
 
             proxyRequest.getHeaders().add("gzip","true");

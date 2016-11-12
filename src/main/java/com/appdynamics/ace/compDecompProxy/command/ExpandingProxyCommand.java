@@ -1,7 +1,5 @@
 package com.appdynamics.ace.compDecompProxy.command;
 
-import com.appdynamics.ace.compDecompProxy.command.JettyCommand;
-import com.appdynamics.ace.compDecompProxy.handler.CompressProxyServlet;
 import com.appdynamics.ace.compDecompProxy.handler.UncompressProxyServlet;
 import com.appdynamics.ace.util.cli.api.api.CommandException;
 import com.appdynamics.ace.util.cli.api.api.OptionWrapper;
@@ -51,8 +49,7 @@ public class ExpandingProxyCommand extends JettyCommand{
     }
 
     @Override
-    protected void addHandler(Server http) {
-        ServletHandler servletHandler = new ServletHandler();
+    protected void addHandler(ServletHandler handler) {
 
         ServletHolder holder = new ServletHolder(new UncompressProxyServlet(_targetUrl, _compressHeader));
 
@@ -63,8 +60,7 @@ public class ExpandingProxyCommand extends JettyCommand{
         if (isVerboseLogging())  holder.setInitParameter("verboseLogging", "true");
 
 
-        servletHandler.addServletWithMapping(holder,"/");
-        http.setHandler(servletHandler);
+        handler.addServletWithMapping(holder,"/");
     }
 
 

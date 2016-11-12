@@ -16,14 +16,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * Created by stefan.marx on 12.10.16.
  */
 public class TransportClient {
 
-    protected static Logger _log = Logger.getLogger("TransportClient");
+    protected static Logger _log = Logger.getLogger(TransportClient.class.getName());
 
 
     private final CloseableHttpClient client;
@@ -42,7 +42,7 @@ public class TransportClient {
         try {
             method = HttpVerbs.valueOf(verb.toUpperCase());
         } catch (Throwable t) {
-          _log.log(Level.SEVERE,"Unsupported HTTP Verb : "+verb);
+          _log.error("Unsupported HTTP Verb : "+verb);
             return null;
         }
 
@@ -61,7 +61,7 @@ public class TransportClient {
 
 
                 if (payload != null) {
-                    _log.log(Level.INFO,"Append Payload : "+contentEncoding+"  ::"+payload.length);
+                    _log.info("Append Payload : "+contentEncoding+"  ::"+payload.length);
                     ByteArrayEntity e = new ByteArrayEntity(payload, ContentType.create(contentEncoding));
                     post.setEntity(e);
                 }
@@ -98,7 +98,7 @@ public class TransportClient {
         try {
             return client.execute(method);
         } catch (IOException e) {
-            _log.log(Level.SEVERE,"Error while executing");
+            _log.error("Error while executing");
             throw new IOException("Error while executing http Call:",e);
         }
     }

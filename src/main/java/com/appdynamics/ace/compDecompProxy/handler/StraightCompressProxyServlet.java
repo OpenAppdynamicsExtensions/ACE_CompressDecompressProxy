@@ -27,7 +27,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -58,7 +58,7 @@ public class StraightCompressProxyServlet extends HttpServlet {
     }
 
 
-    protected static Logger _log = Logger.getLogger("UncompressServlet");
+    protected static Logger _log = Logger.getLogger(StraightCompressProxyServlet.class.getName());
     private TransportClient client;
     private ServletConfig config;
 
@@ -77,7 +77,7 @@ public class StraightCompressProxyServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        _log.log(Level.INFO, "Work on incoming Request " + req.getRequestURI());
+        _log.info( "Work on incoming Request " + req.getRequestURI());
 
         List<Header> headers = new ArrayList<Header>();
 
@@ -96,7 +96,7 @@ public class StraightCompressProxyServlet extends HttpServlet {
 
 
         String targetURI = rewriteTarget(req);
-        _log.log(Level.INFO, "Target to :" + targetURI);
+        _log.info( "Target to :" + targetURI);
 
 
         byte[] buffer = null;
@@ -106,7 +106,7 @@ public class StraightCompressProxyServlet extends HttpServlet {
         if (req.getContentLength() > -1) {
             buffer = readContent(req, shouldCompress);
 
-            _log.log(Level.INFO, "forwarding Request with content size: " + buffer.length);
+            _log.info("forwarding Request with content size: " + buffer.length);
 
         }
 
@@ -119,10 +119,10 @@ public class StraightCompressProxyServlet extends HttpServlet {
         }
 
 
-        _log.log(Level.INFO, "Result from forwarding endpoint :" + forwardResp.getStatusLine());
+        _log.info("Result from forwarding endpoint :" + forwardResp.getStatusLine());
 
         byte[] respBody = readResponseContent(forwardResp);
-        _log.log(Level.INFO, "Response Size :" + respBody.length);
+        _log.info( "Response Size :" + respBody.length);
 
         resp.setStatus(forwardResp.getStatusLine().getStatusCode());
 
@@ -221,13 +221,13 @@ public class StraightCompressProxyServlet extends HttpServlet {
 
             }
         } catch (IOException e) {
-            _log.log(Level.SEVERE,"Problem reading response, will discard response",e);
+            _log.info("Problem reading response, will discard response",e);
             return new byte[]{};
         } finally {
             try {
                 response.close();
             } catch (IOException e) {
-                _log.log(Level.SEVERE,"Close Failed on Entity read",e);
+                _log.info("Close Failed on Entity read",e);
                 return new byte []{};
             }
         }
@@ -237,7 +237,7 @@ public class StraightCompressProxyServlet extends HttpServlet {
 
     private byte[] readContent(HttpServletRequest request, boolean compress) throws IOException {
 
-        if (compress) _log.log(Level.INFO, "Compressing Request (" + request.getContentLength() + ")");
+        if (compress) _log.info("Compressing Request (" + request.getContentLength() + ")");
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         OutputStream wrk  = compress?new GZIPOutputStream(os):os;
@@ -261,7 +261,7 @@ public class StraightCompressProxyServlet extends HttpServlet {
 
         byte[] dataBuffer = os.toByteArray();
 
-        if (compress) _log.log(Level.INFO, "new Size : " + dataBuffer.length);
+        if (compress) _log.info( "new Size : " + dataBuffer.length);
 
         return dataBuffer;
     }

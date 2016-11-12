@@ -1,21 +1,19 @@
 package com.appdynamics.ace.compDecompProxy.command;
 
-import com.appdynamics.ace.util.cli.api.api.Command;
+import com.appdynamics.ace.compDecompProxy.handler.health.HealthDetailCallback;
 import com.appdynamics.ace.util.cli.api.api.CommandException;
 import com.appdynamics.ace.util.cli.api.api.OptionWrapper;
 import org.apache.commons.cli.Option;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.json.simple.JSONObject;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.util.Date;
 import java.util.Enumeration;
@@ -63,12 +61,12 @@ public class DebugFileCommand extends JettyCommand {
     }
 
     @Override
-    protected void addHandler(Server http) {
+    protected void addHandler(ServletHandler handler) {
 
-        ServletHandler servletHandler = new ServletHandler();
+        DebugServlet servlet;
+        handler.addServletWithMapping( new ServletHolder(servlet =new DebugServlet()),"/");
 
-        servletHandler.addServletWithMapping(new ServletHolder(new DebugServlet()),"/");
-        http.setHandler(servletHandler);
+        getHealthServlet().addHealthDetailCallback(servlet);
 
     }
 
@@ -77,10 +75,28 @@ public class DebugFileCommand extends JettyCommand {
         return "Starts a generic endpoint that accepts all data and prints debug information.";
     }
 
-    private class DebugServlet extends HttpServlet {
+    private class DebugServlet extends HttpServlet implements HealthDetailCallback{
+
+
+        private long _totalCharsRead;
+        private long _totalInputRequested;
+
+
+        @Override
+        public JSONObject getDetailJson() {
+            JSONObject erg = new JSONObject();
+            erg.put("totalBytes",_totalCharsRead);
+            erg.put("totalRequests",_totalInputRequested);
+            return erg;
+        }
+
+
         @Override
         protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             Date time = new Date();
+
+
+            _totalInputRequested++;
 
 
             System.out.println("\n-----------------\nDebug : "+req.getMethod().toUpperCase()+"  "+req.getRequestURI());
@@ -147,6 +163,9 @@ public class DebugFileCommand extends JettyCommand {
                 }
                 System.out.println("\n----");
 
+                _totalCharsRead += charsRead;
+
+
                 System.out.println("Char readed: "+charsRead);
                 if (output != null) {
                     output.flush();
@@ -169,5 +188,6 @@ public class DebugFileCommand extends JettyCommand {
 
 
         }
+
     }
 }

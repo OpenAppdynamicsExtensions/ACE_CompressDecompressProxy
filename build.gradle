@@ -34,6 +34,7 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-proxy:9.2.15.v20160210'
     compile 'com.appdynamics.ace.cli:CommandFramework:1.5'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
 
 
     // Declare the dependency for your favourite test framework you want to use in your tests.

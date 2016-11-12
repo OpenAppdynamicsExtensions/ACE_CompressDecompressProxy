@@ -1,6 +1,5 @@
 package com.appdynamics.ace.compDecompProxy.command;
 
-import com.appdynamics.ace.compDecompProxy.handler.CompressProxyServlet;
 import com.appdynamics.ace.compDecompProxy.handler.StraightCompressProxyServlet;
 import com.appdynamics.ace.util.cli.api.api.CommandException;
 import com.appdynamics.ace.util.cli.api.api.OptionWrapper;
@@ -51,8 +50,7 @@ public class StraightCompressingProxyCommand extends JettyCommand{
     }
 
     @Override
-    protected void addHandler(Server http) {
-        ServletHandler servletHandler = new ServletHandler();
+    protected void addHandler(ServletHandler handler) {
 
         ServletHolder holder = new ServletHolder(new StraightCompressProxyServlet(_targetUrl, _compressHeader));
 
@@ -60,8 +58,7 @@ public class StraightCompressingProxyCommand extends JettyCommand{
        // holder.setAsyncSupported(true);
         holder.setInitParameter("maxThreads", "20");
 
-        servletHandler.addServletWithMapping(holder,"/");
-        http.setHandler(servletHandler);
+        handler.addServletWithMapping(holder,"/");
     }
 
     @Override

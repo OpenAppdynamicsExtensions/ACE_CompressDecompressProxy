@@ -14,9 +14,6 @@ public class Main {
     public static void main(String[] args) {
 
 
-        BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.ERROR);
-
         CommandlineExecution cli = new CommandlineExecution("compDecompProxy");
 
         cli.setHelpVerboseEnabled(false);
