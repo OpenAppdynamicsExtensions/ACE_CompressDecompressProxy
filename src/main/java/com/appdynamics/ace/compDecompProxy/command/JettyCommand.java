@@ -141,7 +141,7 @@ public abstract class JettyCommand extends AbstractCommand {
 
 
 
-        handler.addServletWithMapping(holder,"/proxyHealth");
+        handler.addServletWithMapping(holder,"/adProxyHealth");
 
 
     }

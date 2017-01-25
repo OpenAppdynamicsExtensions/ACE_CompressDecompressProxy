@@ -126,6 +126,11 @@ public class StraightCompressProxyServlet extends HttpServlet {
 
         resp.setStatus(forwardResp.getStatusLine().getStatusCode());
 
+        // copy Headers
+        Header[] forwardHeaders = forwardResp.getAllHeaders();
+        for (Header h: forwardHeaders) {
+            resp.setHeader(h.getName(),h.getValue());
+        }
 
         if (respBody.length > 0) {
             ServletOutputStream os = resp.getOutputStream();
