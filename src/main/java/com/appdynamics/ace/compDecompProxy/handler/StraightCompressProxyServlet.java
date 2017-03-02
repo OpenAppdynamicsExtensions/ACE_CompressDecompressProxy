@@ -66,6 +66,8 @@ public class StraightCompressProxyServlet extends HttpServlet {
         super();
         _targetUrl = targetUrl;
         _compressHeader = compressHeader;
+
+        _log.debug("Created Straigt compress proxy to "+_targetUrl+ " with compressing header :"+_compressHeader);
     }
 
     @Override
@@ -78,6 +80,18 @@ public class StraightCompressProxyServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         _log.info( "Work on incoming Request " + req.getRequestURI());
+
+        StringBuffer headerDebug = new StringBuffer("Receiving Headers :");
+        Enumeration<String> hnames = req.getHeaderNames();
+        while (hnames.hasMoreElements()) {
+            String lheader = hnames.nextElement();
+            headerDebug.append("\n")
+                    .append(lheader)
+                    .append("  ->  ")
+                    .append(req.getHeader(lheader));
+        }
+        _log.debug(headerDebug.toString());
+
 
         List<Header> headers = new ArrayList<Header>();
 
@@ -102,6 +116,8 @@ public class StraightCompressProxyServlet extends HttpServlet {
         byte[] buffer = null;
 
         boolean shouldCompress = ("gzip".equals(req.getHeader(_compressHeader)) );
+
+        _log.debug("Should compress read as :"+shouldCompress);
 
         if (req.getContentLength() > -1) {
             buffer = readContent(req, shouldCompress);
